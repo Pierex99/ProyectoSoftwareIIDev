@@ -4,6 +4,7 @@ const app = express();
 const PORT = 3000;
 const bannerAPI = require("./api/banner");
 const tiendaAPI = require("./api/tienda");
+const productoAPI = require("./api/producto");
 const ofertaAPI = require("./api/oferta");
 const tipoAPI = require("./api/tipo");
 const categoriaAPI = require("./api/categoria");
@@ -32,9 +33,14 @@ app.get("/banner", bannerAPI.getAll);
 
 app.get("/tienda", tiendaAPI.getAll);
 
+// Recurso: Producto ISW2
+// 1. GET ALL
+
+app.get("/producto", productoAPI.getAll);
 
 // Recurso: Oferta
 // 1. GET ALL
+
 
 app.get("/oferta", ofertaAPI.getAll);
 
