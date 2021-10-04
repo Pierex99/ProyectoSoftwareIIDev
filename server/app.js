@@ -3,8 +3,6 @@ const bodyParser = require("body-parser");
 const app = express();
 const PORT = 3000;
 const bannerAPI = require("./api/banner");
-const tiendaAPI = require("./api/tienda");
-const productoAPI = require("./api/producto");
 const ofertaAPI = require("./api/oferta");
 const tipoAPI = require("./api/tipo");
 const categoriaAPI = require("./api/categoria");
@@ -13,6 +11,12 @@ const eventoAPI = require("./api/evento");
 const eventoPedidoAPI = require("./api/evento_pedido");
 const login = require("./api/login");
 const registro = require("./api/registro");
+
+// Recursos ISW2
+const tiendaAPI = require("./api/tienda");
+const productoAPI = require("./api/producto");
+const productoPedidoAPI = require("./api/producto_pedido");
+
 
 app.use(express.static("public/html"));
 app.use(express.static("public"));
@@ -28,19 +32,31 @@ app.post("/registro", registro.post);
 
 app.get("/banner", bannerAPI.getAll);
 
-// Recurso: Tienda ISW2
-// 1. GET ALL
+// -----------------------------------------//
+
+// Recurso: Tienda ISW2 //
+    // 1. GET ALL
 
 app.get("/tienda", tiendaAPI.getAll);
 
-// Recurso: Producto ISW2
-// 1. GET ALL
+// Recurso: Producto ISW2 //
+    // 1. GET ALL
 
 app.get("/producto", productoAPI.getAll);
 
+// Recurso: Producto Pedido ISW2 //
+// 1. POST
+
+app.post("/producto_pedido", productoPedidoAPI.post);
+
+// 2. GET
+
+app.get("/producto_pedido/:id", productoPedidoAPI.get);
+
+// -----------------------------------------//
+
 // Recurso: Oferta
 // 1. GET ALL
-
 
 app.get("/oferta", ofertaAPI.getAll);
 

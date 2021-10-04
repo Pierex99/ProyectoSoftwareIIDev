@@ -1,7 +1,14 @@
-<html>
+<!doctype html>
+<html lang="es">
 
 <head>
-    <Title>Productos</Title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link href="../css/carousel.css" rel="stylesheet">
+    <title>Productos</title>
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -17,129 +24,123 @@
             }
         }
     </style>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <link href="../css/carousel.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body class="container">
-    
-        <!-- Barra de Navegación -->
-        <header>
-            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" >
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">FrutiExpress</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-    
-                    <div class="collapse navbar-collapse" id="navbarCollapse">
-                        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="#">Se un repartidor</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Publica tu tienda</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link">Ayuda</a>
-                            </li>
-                        </ul>
-                    </div>
-    
-                    <div class="text-end">
-                        <span>
-                            <button type="button" class="btn material-icons" style="color:crimson" data-toggle="modal" data-target="#modalCarrito">
-                                shopping_cart
-                            </button>
-                        </span>
-                        <span style="color:crimson" id="cantProductos">(0)</span>
-                        <!--
-                        <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal"
-                            data-bs-target="#modalCarrito">
-                            Carrito de Compras
-                        </button>
-                        -->
-                        <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal"
-                            data-bs-target="#loginModal" id="login">
-                            Iniciar Sesión
-                        </button>
-                        <button type="button" class="btn btn-success" id="register"
-                        >Regístrate</button>
-                    </div>
+
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">FrutiExpress</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="#">Se un repartidor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Publica tu tienda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">Ayuda</a>
+                        </li>
+                    </ul>
                 </div>
-            </nav>
-        </header>
-        <main>
+
+                <div class="text-end">
+                    <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal"
+                        data-bs-target="#modalCarrito">
+                        Carrito de Compras
+                    </button>
+                    <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal"
+                        data-bs-target="#loginModal">
+                        Iniciar Sesión
+                    </button>
+                    <button type="button" class="btn btn-success">Regístrate</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
         <div class="row">
             <!--Filtros-->
-            <div class="col-md-4 mt-3">
+            <div class="col-md-4 mt-4">
                 <form>
-                    <div class="form-group">
-                        <label for="exampleInputPais">Categoria</label>
-                        <select class="form-control" id="listaCategorias">
-                            <option selected disabled>Selecciona la categoría</option>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Categoría</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
                         </select>
                     </div>
+
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success" type="button">Filtrar</button>
+                    </div>
                 </form>
-                <button id="botonFiltrar" class="btn btn-primary btn-block mb-3">Filtrar</button>
             </div>
 
             <!--cards de eventos-->
-            <div id="cards" class="col-md-8 mt-3"></div>
-            
+            <div id="cardsProductos" class="col-md-8 mt-4"></div>
         </div>
     </main>
+
     <!-- Footer -->
-    <div class="card mt-3 mb-3">
+    <footer class="card container mt-4">
         <div class="card-body text-center">
             Universidad de Lima
         </div>
-    </div>
-
+    </footer>
 
     <!-- MODAL DE CARRITO DE COMPRAS-->
-    <div class="modal fade" id="modalCarrito" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalCarrito" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Eventos a adquirir</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="exampleModalLabel">Productos a adquirir</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                
-                <div class="modal-body px-5">
+
+                <div class="modal-body">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Evento</th>
+                                <th>Producto</th>
                                 <th>Cantidad</th>
                                 <th>Monto (S/.)</th>
                             </tr>
                         </thead>
                         <tbody id="tbody"></tbody>
                     </table>
-                    <p id="totalPagar">Total a pagar: S/. 0</p>
-                    <div class="text-center d-grid gap-1">
-                        <button id="botonPagar" class="btn btn-primary btn-block mt-3">Pagar</button>
+
+                    <p id="subtotal">Subtotal: S/. 0</p>
+
+                    <div class="d-grid gap-2 mt-2">
+                        <button type="button" class="btn btn-success btn-block" id="botonPagar">
+                            Ir a pagar
+                        </button>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
-    <script src="../js/productos2.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <script src="/js/productos.js"></script>
+
 </body>
 
 </html>

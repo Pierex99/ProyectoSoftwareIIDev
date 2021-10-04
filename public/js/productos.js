@@ -1,76 +1,88 @@
+// Constante General
+const URL_BASE = "http://localhost:3000";
+// Variables Carrito de Compra
+var arregloProductosCC = [];
 var filasTabla = 0;
 var montoTotal = 0;
-const URL_BASE = "http://localhost:3000";
-const divCardPrincipal = document.getElementById("cards");
-const tableBody = document.getElementById("tableBody");
-const labelMonto = document.getElementById("montoTotal");
-var listaPaises;
-var listaProductos;
-var listaTipos;
-var listaCategorias;
-var montoTotal = 0;
-var cantEntradas = 0;
-var arregloProductosCC = [];
+// Local Storage
+localStorage.setItem("idUsuario", 1);
 
-const armarCard = (producto) => {
-    const divCards = document.getElementById('cards');
+const armarCardProducto = (producto) =>{
+    const divCards = document.getElementById('cardsProductos');
 
     var divCard = document.createElement('div');
     divCard.setAttribute('class', 'card mb-3');
-    divCard.setAttribute('id', 'producto' + producto.id);
-    divCard.setAttribute('categoria', producto.categoria);
-    divCard.setAttribute('dia', producto.fecha);
-    divCard.setAttribute('tipo', producto.tipo);
+    divCard.setAttribute('id', 'evento' + producto.id);
 
-    var divFilaCard = document.createElement('div');
-    divFilaCard.setAttribute('class', 'row card-body align-items-center');
-    var divInfo = document.createElement('div');
-    divInfo.setAttribute('class', 'col-3');
-    var divProducto = document.createElement('div');
-    divProducto.innerHTML = producto.nombre;
-    var divMonto = document.createElement('div');
-    var spanSimbolo = document.createElement('span');
-    spanSimbolo.innerHTML = "S/. "
-    var spanMonto = document.createElement('span');
-    spanMonto.innerHTML = producto.monto;
+    var divEstructuraCard = document.createElement('div');
+    divEstructuraCard.setAttribute('class', 'row card-body align-items-center');
+
+    var divColumnaImagen = document.createElement('div');
+    divColumnaImagen.setAttribute('class', 'col-md-3');
+    var imagenProducto = document.createElement('img');
+    imagenProducto.setAttribute('class', 'img-fluid rounded mx-auto d-block');
+    imagenProducto.setAttribute('src', producto.imagen);
+    imagenProducto.setAttribute('alt', 'Market')
+
+    var divColumnaDescripcion = document.createElement('div');
+    divColumnaDescripcion.setAttribute('class', 'col-md-9');
+    var divCardBody = document.createElement("div");
+    divCardBody.setAttribute('class', 'card-body');
+    // Titulo del Card
+    var h5Titulo = document.createElement('h5');
+    h5Titulo.setAttribute('class', 'card-title');
+    h5Titulo.innerHTML = producto.nombreProd;
+    // Texto Secundario del Card
+    var pText2 = document.createElement('p');
+    pText2.setAttribute('class', 'card-text');
+    var smallText1 = document.createElement('small');
+    smallText1.innerHTML = producto.descripcion 
+    smallText1.setAttribute('class', 'text-muted')
+    // Texto Primario del Card
+    var pText1 = document.createElement('p');
+    pText1.setAttribute('class', 'card-text');
+    var span1 = document.createElement('span');
+    span1.innerHTML = "S/. "
+    var span2 = document.createElement('span');
+    span2.innerHTML = producto.precio;
+    var span3 = document.createElement('span');
+    span3.innerHTML = ".00 /u"
+    // Boton de Card
     var buttonProducto = document.createElement('button');
-    buttonProducto.setAttribute('class', 'btn btn-primary mt-2');
+    buttonProducto.setAttribute('class', 'btn btn-success');
     buttonProducto.innerHTML = "+";
     buttonProducto.setAttribute("idBoton", producto.id);
     buttonProducto.onclick = butAgregarProductoOnClick;
-    var divImagen = document.createElement('div');
-    divImagen.setAttribute('class', 'col-9');
-    var img = document.createElement('img');
-    img.setAttribute('class', 'img-fluid');
-    img.setAttribute('src', "https://images.rappi.pe/products/97625-1560872039168.png?d=200x200&?d=1920xundefined&e=webp");
 
-
-    divMonto.appendChild(spanSimbolo);
-    divMonto.appendChild(spanMonto);
-    divInfo.appendChild(divProducto);
-    divInfo.appendChild(divMonto);
-    divInfo.appendChild(buttonProducto);
-    divImagen.appendChild(img);
-    divFilaCard.appendChild(divInfo);
-    divFilaCard.appendChild(divImagen);
-    divCard.appendChild(divFilaCard);
+    divColumnaImagen.appendChild(imagenProducto);
+    divCardBody.appendChild(h5Titulo);
+    pText2.appendChild(smallText1);
+    divCardBody.appendChild(pText2);
+    pText1.append(span1);
+    pText1.append(span2);
+    pText1.append(span3);
+    divCardBody.appendChild(pText1);
+    divCardBody.appendChild(buttonProducto);
+    divColumnaDescripcion.appendChild(divCardBody);
+    divEstructuraCard.appendChild(divColumnaImagen);
+    divEstructuraCard.appendChild(divColumnaDescripcion);
+    divCard.appendChild(divEstructuraCard);
     divCards.appendChild(divCard);
 }
 
 const cargarProductos = async () => {
     const resp = await fetch(`${URL_BASE}/producto`, { method: "GET" });
     const Data = await resp.json();
-    
+
     for (e of Data.data) {
-        armarCard(e);
-        
+        armarCardProducto(e);
     }
 }
 
 const butAgregarProductoOnClick = (e) => {
     var numID = e.target.getAttribute("idBoton");
 
-    var producto = e.target.previousSibling.previousSibling;
+    var producto = e.target.previousSibling.previousSibling.previousSibling;
     var cantidad = 1;
     var monto = e.target.previousSibling;
 
@@ -91,7 +103,7 @@ const butAgregarProductoOnClick = (e) => {
 
         td1.innerHTML = producto.innerHTML;
         td2.innerHTML = cantidad;
-        td3.innerHTML = monto.lastChild.innerHTML;
+        td3.innerHTML = monto.lastChild.previousSibling.innerHTML;
 
         tr.appendChild(td1);
         tr.appendChild(td2);
@@ -99,61 +111,24 @@ const butAgregarProductoOnClick = (e) => {
         tbody.appendChild(tr);
         arregloProductosCC.push(numID);
     }
-    else {
+    else 
+    {
         var tempCant = parseInt(document.getElementById("colProductoCant" + numID).innerText);
         tempCant++;
         document.getElementById("colProductoCant" + numID).innerText = tempCant;
 
-        var tempMonto = (monto.lastChild.innerHTML) * tempCant;
+        var tempMonto = (monto.lastChild.previousSibling.innerHTML) * tempCant;
         document.getElementById("colProductoMonto" + numID).innerText = tempMonto;
     }
 
-    //aumentar cantidad
+    
     filasTabla++;
-    document.getElementById('cantProductos').innerHTML = "(" + filasTabla + ")";
 
-    //TODO: actualizar total a pagar (SUMA)
-    montoTotal = parseInt(montoTotal) + parseInt(monto.lastChild.innerHTML);
-    document.getElementById('totalPagar').innerHTML = "Total a pagar: S/. " + montoTotal;
+    montoTotal = parseInt(montoTotal) + parseInt(monto.lastChild.previousSibling.innerHTML);
+    document.getElementById('subtotal').innerHTML = "Subtotal: S/. " + montoTotal;
 }
 
-const cargarCategorias = async () => {
-    const resp = await fetch(`${URL_BASE}/categoria`, { method: "GET" });
-    const Data = await resp.json();
-    const arregloCategorias = Data.data;
-
-    for (var i = 0; i < arregloCategorias.length; i++) {
-        var nuevaCategoria = document.createElement("option")
-        nuevaCategoria.innerText = arregloCategorias[i].nombre;
-        nuevaCategoria.setAttribute = ("id", arregloCategorias[i].id);
-        document.getElementById("listaCategorias").appendChild(nuevaCategoria);
-    }
-}
-
-var filtrarProductos = () => {
-    var urlAEjecutar = `${URL_BASE}/producto`;
-
-    var categoriaB = document.getElementById("listaCategorias").selectedIndex;
-    if (categoriaB != 0) {
-        urlAEjecutar += `?categoria=${categoriaB}`;
-        //categoriaSeleccion = true
-    };
-
-    fetch(urlAEjecutar, {
-        method: "GET"
-    }).then((res) => {
-        res.json().then((data) => {
-            if (data.msg == "") {
-                document.getElementById('cards').innerHTML = "";
-                for (var ev of data.data) {
-                    armarCard(ev);
-                }
-            }
-        })
-    })
-}
-
-const pagarProductos = async () => {
+const pagarEventos = async () => {
     var body1;
     var body2;
 
@@ -191,26 +166,13 @@ const pagarProductos = async () => {
             });
 
         localStorage.setItem("ultimoPedido", idPedidoGen);
-        window.setTimeout(() => { location = "resumen_pedido.html" }, 3000);
+        window.setTimeout(() => { location = "checkout.html" }, 3000);
     }
 }
 
-function convertDateFormat(string) {
-    var info = string.split('-');
-    return parseInt(info[1]) + '/' + parseInt(info[2]) + '/' + info[0];
-}
-
-const redireccionInicio = () => {
-    location = "landing_page.html";
-}
-
 function main() {
-    cargarCategorias();
-    cargarProductos();
-    document.getElementById("botonFiltrar").onclick = filtrarProductos;
-    document.getElementById("botonPagar").onclick = pagarProductos;
-    document.getElementById("logout").onclick = redireccionInicio;
+    cargarProductos()
+    document.getElementById("botonPagar").onclick = pagarEventos;
 }
 
-window.onload = main;
-
+window.addEventListener("load", main);

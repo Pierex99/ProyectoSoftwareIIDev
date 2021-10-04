@@ -8,7 +8,7 @@ const pedidoAPI =
 
         const pedidoNuevo =
         {
-            idCliente: pedido.idCliente,
+            idCliente: 1,
             montoT: pedido.montoT,
         }
 
