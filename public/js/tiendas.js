@@ -32,12 +32,19 @@ const armarCardTienda = (tienda) =>{
     var smallText1 = document.createElement('small');
     smallText1.innerHTML = tienda.tiempoMin + " - " + tienda.tiempoMax + " Minutos"
     smallText1.setAttribute('class', 'text-muted')
+    // Boton de Card
+    var buttonTienda = document.createElement('a');
+    buttonTienda.setAttribute('class', 'btn btn-success');
+    buttonTienda.setAttribute('role', 'button');
+    buttonTienda.innerHTML = "Ir a la tienda";
+    buttonTienda.setAttribute('href', 'productos.html')
 
     divColumnaImagen.appendChild(imagenTienda);
     divCardBody.appendChild(h5Titulo);
     divCardBody.appendChild(pText1);
     pText2.appendChild(smallText1);
     divCardBody.appendChild(pText2);
+    divCardBody.appendChild(buttonTienda);
     divColumnaDescripcion.appendChild(divCardBody);
     divEstructuraCard.appendChild(divColumnaImagen);
     divEstructuraCard.appendChild(divColumnaDescripcion);

@@ -166,7 +166,7 @@ const pagarEventos = async () => {
             });
 
         localStorage.setItem("ultimoPedido", idPedidoGen);
-        window.setTimeout(() => { location = "checkout.html" }, 3000);
+        window.setTimeout(() => { location = "checkout.html" }, 1500);
     }
 }
 
