@@ -1,16 +1,14 @@
 const db = require("../dao/models");
 
-const ProductoAPI =
+const ProductoDAO =
 {
-    getAll : async (req, res) =>
+    getProducto : async (productoId) =>
     {
-        const arregloProducto = await db.Producto.findAll();
-        res.json(
-        {
-            data : arregloProducto,
-            msg : ""
-        })
+        const arregloProducto = await db.Producto.findAll({
+            where : {id : productoId}
+        });
+        return arregloProducto;
     }
 }
 
-module.exports = ProductoAPI;
+module.exports = ProductoDAO;

@@ -1,16 +1,12 @@
 const db = require("../dao/models");
 
-const TiendaAPI =
+const TiendaDAO =
 {
-    getAll : async (req, res) =>
+    getAll : async () =>
     {
         const arregloTienda = await db.Tienda.findAll();
-        res.json(
-        {
-            data : arregloTienda,
-            msg : ""
-        })
+        return arregloTienda
     }
 }
 
-module.exports = TiendaAPI;
+module.exports = TiendaDAO;

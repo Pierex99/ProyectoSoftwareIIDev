@@ -10,15 +10,6 @@ module.exports = {
       nombreTienda: {
         type: Sequelize.STRING
       },
-      tiempoMin: {
-        type: Sequelize.INTEGER
-      },
-      tiempoMax: {
-        type: Sequelize.INTEGER
-      },
-      costoEnvio: {
-        type: Sequelize.INTEGER
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

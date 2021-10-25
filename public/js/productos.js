@@ -1,90 +1,29 @@
 // Constante General
-const URL_BASE = "http://localhost:3000";
+// const URL_BASE = "http://localhost:3000";
 // Variables Carrito de Compra
 var arregloProductosCC = [];
 var filasTabla = 0;
 var montoTotal = 0;
+
+// Variable Conteo Botones
+// var cantidadBotones = 0;
 // Local Storage
-localStorage.setItem("idUsuario", 1);
-
-const armarCardProducto = (producto) =>{
-    const divCards = document.getElementById('cardsProductos');
-
-    var divCard = document.createElement('div');
-    divCard.setAttribute('class', 'card mb-3');
-    divCard.setAttribute('id', 'evento' + producto.id);
-
-    var divEstructuraCard = document.createElement('div');
-    divEstructuraCard.setAttribute('class', 'row card-body align-items-center');
-
-    var divColumnaImagen = document.createElement('div');
-    divColumnaImagen.setAttribute('class', 'col-md-3');
-    var imagenProducto = document.createElement('img');
-    imagenProducto.setAttribute('class', 'img-fluid rounded mx-auto d-block');
-    imagenProducto.setAttribute('src', producto.imagen);
-    imagenProducto.setAttribute('alt', 'Market')
-
-    var divColumnaDescripcion = document.createElement('div');
-    divColumnaDescripcion.setAttribute('class', 'col-md-9');
-    var divCardBody = document.createElement("div");
-    divCardBody.setAttribute('class', 'card-body');
-    // Titulo del Card
-    var h5Titulo = document.createElement('h5');
-    h5Titulo.setAttribute('class', 'card-title');
-    h5Titulo.innerHTML = producto.nombreProd;
-    // Texto Secundario del Card
-    var pText2 = document.createElement('p');
-    pText2.setAttribute('class', 'card-text');
-    var smallText1 = document.createElement('small');
-    smallText1.innerHTML = producto.descripcion 
-    smallText1.setAttribute('class', 'text-muted')
-    // Texto Primario del Card
-    var pText1 = document.createElement('p');
-    pText1.setAttribute('class', 'card-text');
-    var span1 = document.createElement('span');
-    span1.innerHTML = "S/. "
-    var span2 = document.createElement('span');
-    span2.innerHTML = producto.precio;
-    var span3 = document.createElement('span');
-    span3.innerHTML = ".00 /u"
-    // Boton de Card
-    var buttonProducto = document.createElement('button');
-    buttonProducto.setAttribute('class', 'btn btn-success');
-    buttonProducto.innerHTML = "+";
-    buttonProducto.setAttribute("idBoton", producto.id);
-    buttonProducto.onclick = butAgregarProductoOnClick;
-
-    divColumnaImagen.appendChild(imagenProducto);
-    divCardBody.appendChild(h5Titulo);
-    pText2.appendChild(smallText1);
-    divCardBody.appendChild(pText2);
-    pText1.append(span1);
-    pText1.append(span2);
-    pText1.append(span3);
-    divCardBody.appendChild(pText1);
-    divCardBody.appendChild(buttonProducto);
-    divColumnaDescripcion.appendChild(divCardBody);
-    divEstructuraCard.appendChild(divColumnaImagen);
-    divEstructuraCard.appendChild(divColumnaDescripcion);
-    divCard.appendChild(divEstructuraCard);
-    divCards.appendChild(divCard);
-}
-
-const cargarProductos = async () => {
-    const resp = await fetch(`${URL_BASE}/producto`, { method: "GET" });
-    const Data = await resp.json();
-
-    for (e of Data.data) {
-        armarCardProducto(e);
-    }
-}
+// localStorage.setItem("idUsuario", 1);
 
 const butAgregarProductoOnClick = (e) => {
-    var numID = e.target.getAttribute("idBoton");
+    var numID = e.target.getAttribute("idbutton");
 
-    var producto = e.target.previousSibling.previousSibling.previousSibling;
+    var producto = e.target.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling;
+    // console.log(producto);
+    // console.log(producto.innerHTML);
     var cantidad = 1;
-    var monto = e.target.previousSibling;
+    var monto1 = e.target.previousSibling.previousSibling;
+    var monto2 = monto1.firstElementChild.nextElementSibling.innerHTML;
+    // console.log(monto2);
+    // console.log(monto.firstElementChild.nextElementSibling.innerHTML);
+    // console.log(monto.lastChild.nodeType);
+    // console.log(monto.lastChild);
+    // console.log(monto.innerHTML);
 
     var boolFila = document.getElementById("filaProducto" + numID);
     var tbody = document.getElementById('tbody');
@@ -101,9 +40,11 @@ const butAgregarProductoOnClick = (e) => {
         var td3 = document.createElement('td');
         td3.setAttribute("id", "colProductoMonto" + numID);
 
+        
+
         td1.innerHTML = producto.innerHTML;
         td2.innerHTML = cantidad;
-        td3.innerHTML = monto.lastChild.previousSibling.innerHTML;
+        td3.innerHTML = monto2;
 
         tr.appendChild(td1);
         tr.appendChild(td2);
@@ -117,62 +58,61 @@ const butAgregarProductoOnClick = (e) => {
         tempCant++;
         document.getElementById("colProductoCant" + numID).innerText = tempCant;
 
-        var tempMonto = (monto.lastChild.previousSibling.innerHTML) * tempCant;
+        var tempMonto = (monto2) * tempCant;
         document.getElementById("colProductoMonto" + numID).innerText = tempMonto;
     }
 
     
     filasTabla++;
+    document.getElementById('cantProductos').innerHTML = "("+filasTabla+")";
 
-    montoTotal = parseInt(montoTotal) + parseInt(monto.lastChild.previousSibling.innerHTML);
+    montoTotal = parseInt(montoTotal) + parseInt(monto2);
     document.getElementById('subtotal').innerHTML = "Subtotal: S/. " + montoTotal;
 }
 
-const pagarEventos = async () => {
-    var body1;
-    var body2;
-
-    body1 =
+/*const obtenerCantidadBotones = () =>
+{   
+    for (var x = 1; x < 9999; x++) 
     {
-        idCliente: parseInt(localStorage.getItem("idUsuario")),
-        montoT: parseInt(montoTotal)
-    }
-
-
-    const resp1 = await fetch(`${URL_BASE}/pedido`,
+        if (document.getElementById("idbutton"+x))
         {
-            method: "POST",
-            body: JSON.stringify(body1),
-            headers: { "Content-Type": "application/json" }
-        });
-
-    const Data1 = await resp1.json();
-    const idPedidoGen = Data1.data.id;
-
-    for (productoCC of arregloProductosCC) {
-        body2 =
-        {
-            idPedido: idPedidoGen,
-            idProducto: productoCC,
-            cantidad: parseInt(document.getElementById("colProductoCant" + productoCC).innerText),
-            montoP: parseInt(document.getElementById("colProductoMonto" + productoCC).innerText),
+            cantidadBotones++;
+            document.getElementById("idbutton"+x).onclick = butAgregarProductoOnClick;
         }
+        else
+        {
+            cantidadBotones = 0;
+            break;
+        }
+    }
+}*/
 
-        const resp2 = await fetch(`${URL_BASE}/producto_pedido`,
-            {
-                method: "POST",
-                body: JSON.stringify(body2),
-                headers: { "Content-Type": "application/json" }
-            });
+/*const asignarOnClickBotones = () =>
+{
+    for (var x = 1; x <= cantidadBotones; x++)
+    {
+        document.getElementById("idbutton"+x).onclick = butAgregarProductoOnClick;
+    }
+}*/
 
-        localStorage.setItem("ultimoPedido", idPedidoGen);
-        window.setTimeout(() => { location = "checkout.html" }, 1500);
+const asignarOnClickBotones = () =>
+{
+    const myElement = document.getElementById('cardsProductos');
+    var element = myElement.firstElementChild;
+    //console.log(myElement);
+    for (let i = 0; i < myElement.children.length; i++) 
+    {
+        //console.log(element);
+        var idButton = element.getAttribute("productoId");
+        document.getElementById("idbutton"+idButton).onclick = butAgregarProductoOnClick;
+        element = element.nextElementSibling;
     }
 }
 
-function main() {
-    cargarProductos()
-    document.getElementById("botonPagar").onclick = pagarEventos;
+
+function main() 
+{
+    asignarOnClickBotones();
 }
 
 window.addEventListener("load", main);

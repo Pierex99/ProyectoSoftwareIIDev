@@ -1,0 +1,68 @@
+<div id="layoutSidenav_content">
+    <main class="">
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Lista de Productos</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Tienda Las Nubes</li>
+            </ol>
+
+            <!--Cards Productos-->
+            <div id="cardsProductos" class="">
+                <% var idProductos = [1,2] %>
+                <% for(var prod = 0; prod < productoTienda.length; prod++) { %>
+                    <% %>
+                    <% for(var i = 0; i < producto.length; i++) { %>
+                        <% if (producto[i].id == productoTienda[prod].idProducto) { %>
+                            <% var index = i %>
+                            <% break %>
+                        <% } %>
+                    <% } %>
+                    <div class="card mb-3" id="producto<%=productoTienda[prod].idProducto%>" productoId="<%=productoTienda[prod].idProducto%>">
+                        <div class="row card-body align-items-center">
+                            <div class="col-md-3">
+                                <img src="<%= producto[index].imagen %>" class="img-fluid rounded mx-auto d-block"
+                                    alt="Market" style="max-width:70%">
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= producto[index].nombreProd %>
+                                    </h5>
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            <%= producto[index].descripcion %>
+                                        </small>
+                                    </p>
+                                    <p class="card-text">
+                                        <span>S/.</span>
+                                        <span>
+                                            <%= productoTienda[prod].precio %>
+                                        </span>
+                                        <span>.00 /u</span>
+                                    </p>
+                                    <button class="btn btn-primary" idbutton="<%=producto[index].id%>" id="idbutton<%=producto[index].id%>">Editar Producto</button>
+                                    <button class="btn btn-primary">Borrar Producto</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        
+        
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; Universidad de Lima 2021</div>
+                <div>
+                    <a href="#">Privacy Policy</a>
+                    &middot;
+                    <a href="#">Terms &amp; Conditions</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

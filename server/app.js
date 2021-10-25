@@ -2,109 +2,119 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const PORT = 3000;
-const bannerAPI = require("./api/banner");
-const ofertaAPI = require("./api/oferta");
-const tipoAPI = require("./api/tipo");
-const categoriaAPI = require("./api/categoria");
-const pedidoAPI = require("./api/pedido");
-const eventoAPI = require("./api/evento");
-const eventoPedidoAPI = require("./api/evento_pedido");
-const login = require("./api/login");
-const registro = require("./api/registro");
+const path = require('path');
 
-// Recursos ISW2
-const tiendaAPI = require("./api/tienda");
-const productoAPI = require("./api/producto");
-const productoPedidoAPI = require("./api/producto_pedido");
+const TiendaDAO = require("./api/tienda");
+const ProductoTiendaDAO = require("./api/producto_tienda");
+const ProductoDAO = require("./api/producto");
+const productoPedidoAPI = require("./api/producto_pedido"); // Eliminación Pendiente
 
+app.set('views', path.join("public", 'views'));
+app.set('view engine', 'ejs');
 
-app.use(express.static("public/html"));
+app.use(express.static("assets"));
+app.use(express.static("assets/demo"));
+app.use(express.static("assets/img"));
 app.use(express.static("public"));
+app.use(express.static("public/views"));
+app.use(express.static("public/js"));
+app.use(express.static("public/views/pages"));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
-app.post("/login", login.post);
-app.post("/registro", registro.post);
+// 1. Pagina Principal
+app.get('/pagina_principal', function(req, res) {
+    // Render del archivo pagina_principal.ejs [public\views\pages\pagina_principal.ejs]
+    res.render('pages/pagina_principal');
+});
 
-// API REST 
-// Recurso: Banner
-// 1. GET ALL
+// 2. Tiendas
+app.get('/tiendas', async function(req, res) {
+    // Creación de const[arreglo] que obtiene los registros de la tabla 'Tienda' de la BD
+    const listaTiendas = await TiendaDAO.getAll()
 
-app.get("/banner", bannerAPI.getAll);
+    // Render del archivo tiendas.ejs [public\views\pages\tiendas.ejs]
+    res.render('pages/tiendas', {
+        // Se envía como variable 'tiendas' que contiene el arreglo listaTienda previamente creado
+        tiendas: listaTiendas
+    });
+});
 
-// -----------------------------------------//
+// 3. Productos
+app.get('/:id/productos', async function(req, res) {
+    // Creación de const[int] que obtiene el idTienda enviado dentro de la ruta '/productos/:id'
+    const productoTiendaId = req.params.id;
+    // Creación de const[arreglo] que obtiene los registros de la tabla 'Producto_Tienda' de la BD
+    // donde su idTienda coincida con el idTienda obtenido en 'productoTiendaId'
+    const listaProductoTiendaDB = await ProductoTiendaDAO.getProductoTienda(parseInt(productoTiendaId));
+    // Creación de const[arreglos]
+    const listaProducto = [];
+    const listaProductoTienda = [];
 
-// Recurso: Tienda ISW2 //
-    // 1. GET ALL
+    // Iteración de los elementos de listaProductoTiendaDB
+    for (let object of listaProductoTiendaDB)
+    {
+        // Creación de var que obtiene el registro del producto en la tabla 'Producto'  
+        var producto = await ProductoDAO.getProducto(parseInt(object.idProducto))
 
-app.get("/tienda", tiendaAPI.getAll);
+        listaProductoTienda.push({
+            id : object.id,
+            idTienda: object.idTienda,
+            idProducto: object.idProducto,
+            precio: object.precio
+        }),
 
-// Recurso: Producto ISW2 //
-    // 1. GET ALL
+        listaProducto.push({
+            id : producto[0].id,
+            nombreProd: producto[0].nombreProd,
+            descripcion: producto[0].descripcion,
+            imagen: producto[0].imagen
+        })
+    }
 
-app.get("/producto", productoAPI.getAll);
+    res.render('pages/productos', {
+        productoTienda: listaProductoTienda,
+        producto: listaProducto
+    });
+});
 
-// Recurso: Producto Pedido ISW2 //
-// 1. POST
+// 4. Panel de Control Administrador
+app.get('/:id/admin_index', async function(req, res) {
+    const productoTiendaId = req.params.id;
+    const listaProductoTiendaDB = await ProductoTiendaDAO.getProductoTienda(parseInt(productoTiendaId));
+    const listaProducto = [];
+    const listaProductoTienda = [];
+    for (let object of listaProductoTiendaDB)
+    {
+        var producto = await ProductoDAO.getProducto(parseInt(object.idProducto))
 
-app.post("/producto_pedido", productoPedidoAPI.post);
+        listaProductoTienda.push({
+            id : object.id,
+            idTienda: object.idTienda,
+            idProducto: object.idProducto,
+            precio: object.precio
+        }),
 
-// 2. GET
+        listaProducto.push({
+            id : producto[0].id,
+            nombreProd: producto[0].nombreProd,
+            descripcion: producto[0].descripcion,
+            imagen: producto[0].imagen
+        })
+    }
 
-app.get("/producto_pedido/:id", productoPedidoAPI.get);
+    res.render('pages/admin_index', {
+        productoTienda: listaProductoTienda,
+        producto: listaProducto
+    });
+});
 
-// -----------------------------------------//
+app.get("/tienda", TiendaDAO.getAll); // Eliminación Pendiente
+app.post("/producto_pedido", productoPedidoAPI.post); // Eliminación Pendiente
+app.get("/:id/producto_pedido", productoPedidoAPI.get); // Eliminación Pendiente
 
-// Recurso: Oferta
-// 1. GET ALL
-
-app.get("/oferta", ofertaAPI.getAll);
-
-// Recurso: Pedido
-// 1. POST
-
-app.post("/pedido", pedidoAPI.post);
-
-// Recurso: Evento Pedido
-// 1. POST
-
-app.post("/evento_pedido", eventoPedidoAPI.post);
-
-// 2. GET
-
-app.get("/evento_pedido/:id", eventoPedidoAPI.get);
-
-// Recurso: Tipos
-// 1. GET ALL
-
-app.get("/tipo", tipoAPI.getAll);
-
-// Recurso: Categorias
-// 1. GET ALL
-
-app.get("/categoria", categoriaAPI.getAll);
-
-// Recurso: Eventos
-// 1. GET ALL
-
-app.get("/evento", eventoAPI.getAll);
-
-// 2. GET
-
-app.get("/evento/:id", eventoAPI.get);
-
-// 3. PUT
-
-app.put("/evento", eventoAPI.put);
-
-// 4. DELETE
-
-app.delete("/evento/:id", eventoAPI.delete);
-
-// 4. POST
-
-app.post("/evento", eventoAPI.post);
-
+// Depuración en consola
 app.listen(PORT, () =>
 {
     console.log(`Servidor iniciado en el puerto ${PORT}`);
