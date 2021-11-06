@@ -8,6 +8,8 @@ const TiendaDAO = require("./api/tienda");
 const ProductoTiendaDAO = require("./api/producto_tienda");
 const ProductoDAO = require("./api/producto");
 const productoPedidoAPI = require("./api/producto_pedido"); // Eliminación Pendiente
+const registro = require("./api/registro");
+const login = require("./api/login");
 
 app.set('views', path.join("public", 'views'));
 app.set('view engine', 'ejs');
@@ -109,6 +111,24 @@ app.get('/:id/admin_index', async function(req, res) {
         producto: listaProducto
     });
 });
+//Login
+app.get("/login", (req,res)=>{
+    res.render('pages/login');
+})
+app.post("/login",(req,res)=>{
+    login.get(req,res);
+    
+})
+//Registro
+app.get("/register",(req,res)=>{
+    res.render('pages/register');
+})
+
+app.post("/register", (req,res)=>{
+    registro.post(req,res);
+})
+
+
 
 app.get("/tienda", TiendaDAO.getAll); // Eliminación Pendiente
 app.post("/producto_pedido", productoPedidoAPI.post); // Eliminación Pendiente
