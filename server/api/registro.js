@@ -6,9 +6,10 @@ const registro =
     {
         const Body = req.body;
 
-        console.log(Body.username);
+        console.log(Body.correo);
 
-        if(Body.nombre == undefined || Body.username == undefined || Body.password == undefined || Body.apellido == undefined || Body.fechaNac == undefined)
+        if(Body.correo == undefined || Body.contraseña == undefined || Body.nombre == undefined || Body.apellido == undefined
+             || Body.direccion == undefined || Body.telefono == undefined || Body.esAdmin == undefined || Body.idTienda == undefined)
         {
             const objError = 
             {
@@ -20,11 +21,14 @@ const registro =
 
         const usuarioNuevo = 
         {
-            username : Body.username,
-            password : Body.password,
-            nombre : Body.nombre,
-            apellido : Body.apellido,
-            fechaNac : Body.fechaNac,
+            correo: Body.correo,
+            contraseña: Body.contraseña,
+            nombre: Body.nombre,
+            apellido: Body.apellido,
+            direccion: Body.direccion,
+            telefono: Body.telefono,
+            esAdmin: Body.esAdmin,
+            idTienda: Body.idTienda,
             createdAt: new Date(),
             updatedAt: new Date()
         }
