@@ -43,6 +43,10 @@ app.get('/tiendas', async function(req, res) {
     });
 });
 
+app.post('/tiendas', (req,res)=>{
+    TiendaDAO.post(req,res);
+});
+
 // 3. Productos
 app.get('/:id/productos', async function(req, res) {
     // Creación de const[int] que obtiene el idTienda enviado dentro de la ruta '/productos/:id'

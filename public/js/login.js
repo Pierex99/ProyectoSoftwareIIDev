@@ -39,12 +39,12 @@ const handleClick = async (e) => {
   })
 
   let resData = await response.json();
-  console.log(resData.data);
   if(resData.data){
     const user= resData.data;
-    //redireccionar si es admin
+
     if(user.esAdmin==1){
       //redireccionar a perfil de admin
+      location.href=`${user.idTienda}/admin_index`;
     }else{
       //redireccionar a tienda
       location.href = "tiendas";

@@ -7,6 +7,9 @@ let password = document.getElementById("registerInputPassword");
 let rePassword = document.getElementById("registerInputRePassword");
 let correo = document.getElementById("registerInputEmail");
 let checkedClient = document.getElementById("checkedClient");
+let checkedAdmin = document.getElementById("checkedAdmin");
+let nombreTienda = document.getElementById("nombreTienda");
+let inputNombreTienda= document.getElementById("inputNombreTienda");
 let message = document.getElementById("registerMessage");
 
 function setMessage(msg) {
@@ -25,8 +28,8 @@ function validateInputs() {
   return true;
 }
 
-function sendData(data = {}) {
-  fetch("../register", {
+async function sendData(url, data = {}) {
+  return await fetch(url, {
     method: 'POST',
     mode: 'cors',
     headers: {
@@ -36,9 +39,9 @@ function sendData(data = {}) {
   })
 }
 
-const handleClick = (e) => {
+const handleClick = async (e) => {
   e.preventDefault();
-  let data ={
+  let data = {
     correo: correo.value,
     contrasenia: password.value,
     nombre: nombre.value,
@@ -50,19 +53,36 @@ const handleClick = (e) => {
   if (!validateInputs()) {
     return
   }
-  if(checkedClient.checked){
-    data={
+  if (checkedClient.checked) {
+    data = {
+      //Si es cliente
       ...data,
-      esAdmin:0
+      esAdmin: 0
     }
-  }else{
-    data={
+  } else {
+    //Si es administrador de tienda
+    //Crear tienda
+    let response = await sendData("../tiendas", { nombreTienda: inputNombreTienda.value });
+    let resData = await response.json();
+    let objTienda = resData.data;
+
+    data = {
       ...data,
-      esAdmin:1
+      esAdmin: 1,
+      idTienda: objTienda.id
     }
+    console.log(resData.data);
   }
-  sendData(data);
+  //Crear administrador
+  await sendData("../register", data);
   location.href = "login";
 }
 
+checkedClient.addEventListener("click", () => {
+  nombreTienda.setAttribute("class", "d-none form-group pb-3 mx-3");
+});
+
+checkedAdmin.addEventListener("click", () => {
+  nombreTienda.setAttribute("class", "d-block form-group pb-3 mx-3");
+});
 but.addEventListener("click", handleClick);
